@@ -4,6 +4,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.WebDriver;
 
 import pageObjects.AddcustomerPage;
+import pageObjects.Dashboardpage;
 import pageObjects.Loginpage;
 import pageObjects.searchcustomerpage;
 
@@ -12,6 +13,7 @@ public class Baseclass {
 	public Loginpage lp;
 	public AddcustomerPage addcust;
 	public searchcustomerpage searchcust;
+	public Dashboardpage dbpage;
 	
 	//created for generating random string in the email for unique emailid
 	public static String randomestring() {

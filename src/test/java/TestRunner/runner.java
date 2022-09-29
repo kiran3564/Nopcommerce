@@ -8,11 +8,11 @@ import io.cucumber.junit.CucumberOptions;
 @RunWith(Cucumber.class)
 @CucumberOptions
 (
-		features=".//Features//Customer.feature",
+		features=".//Features//Dashboard1.feature",
 		glue="stepDefinitions",
 		dryRun=false,
 		monochrome=true,
-		plugin= {"pretty","html:target/test-output"}
+		plugin = {"html:target/cucumber_html_Report.html", "pretty" }
 		)
 
 public class runner {

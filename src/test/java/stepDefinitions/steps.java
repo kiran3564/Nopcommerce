@@ -2,6 +2,11 @@ package stepDefinitions;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -10,6 +15,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import io.cucumber.java.en.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import pageObjects.AddcustomerPage;
+import pageObjects.Dashboardpage;
 import pageObjects.Loginpage;
 import pageObjects.searchcustomerpage;
 
@@ -175,5 +181,79 @@ public class steps extends Baseclass {
 	  Assert.assertEquals(true, status);
 	  
 	}
+	
+	//steps for clearing the cache in admin
+	
+	@Then("click on the settings")
+	public void click_on_the_settings() {
+		dbpage=new Dashboardpage(driver);
+		dbpage.clicksettings();
+	}
+
+	@Then("click on the clear cache button")
+	public void click_on_the_clear_cache_button() {
+	  dbpage.clickclearcache();
+	}
+
+	@Then("user can alert message as {string}")
+	public void user_can_alert_message_as(String string) throws InterruptedException {
+		Thread.sleep(3000);
+		if(driver.getPageSource().contains("For security purposes, the feature you have requested is not available on the demo site."))
+		{
+			driver.close();
+			Assert.assertTrue(true);
+		
+	Thread.sleep(5000);
+	}
+	}
+	
+	//Steps for getting the nopcommerce content
+	
+	@Then("page source should contain {string}")
+	public void page_source_should_contain(String string) throws InterruptedException {
+		Thread.sleep(3000);
+		if(driver.getPageSource().contains("NopCommerce News"))
+		{
+			driver.close();
+			Assert.assertTrue(true);
+	}
+		
+	}
+		//steps for printing the nopcommerce content in console
+		
+		@When("print the content of nopcommerce news in console\\/")
+		public void print_the_content_of_nopcommerce_news_in_console() throws InterruptedException {
+			dbpage=new Dashboardpage(driver);
+		   Thread.sleep(5000);
+		  String newscontent= dbpage.NopcommerceNewscontent();
+		  
+		  
+		  System.out.println(newscontent);
+		}
+
+		@Then("click on logout")
+		public void click_on_logout() throws InterruptedException {
+			Thread.sleep(5000);
+		  dbpage.clickonthelogout();
+		}
+
+		//getting the data and saving in the text file
+		
+		@When("get the data and save it in the text file")
+		public void get_the_data_and_save_it_in_the_text_file() throws InterruptedException, IOException {
+			dbpage=new Dashboardpage(driver);
+			   Thread.sleep(5000);
+			  String newscontent= dbpage.NopcommerceNewscontent();
+			  FileOutputStream fout=new FileOutputStream("C:\\Users\\TT-USER\\eclipse-workspace\\nopcommerce\\vc-01\\Exportdata\\testdata.txt");    
+			     BufferedOutputStream bout=new BufferedOutputStream(fout); 
+			     byte b[]=newscontent.getBytes();    
+			     bout.write(b);    
+			    bout.flush();    
+			     bout.close();    
+			     fout.close();  
+
+		  
+		}
+
 
 }
