@@ -255,5 +255,20 @@ public class steps extends Baseclass {
 		  
 		}
 
-
+//check wether order total is present in dashboard or not
+		
+		
+		
+		@Then("page source should contained the text {string}")
+		public void page_source_should_contained_the_text(String string) throws InterruptedException {
+			Thread.sleep(5000);
+			dbpage=new Dashboardpage(driver);
+			Thread.sleep(3000);
+			if(driver.getPageSource().contains("Order totals"))
+			{
+				driver.close();
+				Assert.assertTrue(true);
+			
+		}
+}
 }

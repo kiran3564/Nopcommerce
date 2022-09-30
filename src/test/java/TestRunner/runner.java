@@ -12,7 +12,8 @@ import io.cucumber.junit.CucumberOptions;
 		glue="stepDefinitions",
 		dryRun=false,
 		monochrome=true,
-		plugin = {"html:target/cucumber_html_Report.html", "pretty" }
+		plugin = {"html:target/cucumber_html_Report.html", "pretty" },
+		tags="@smoke"
 		)
 
 public class runner {

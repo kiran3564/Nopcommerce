@@ -25,3 +25,14 @@ And click on login
 And get the data and save it in the text file
 Then click on logout
 And close browser
+
+@smoke
+Scenario: check wether order total is present in dashboard or not
+Given user launch chrome browser
+When user opens url "http://admin-demo.nopcommerce.com/login"
+And user enters email as  "admin@yourstore.com" and password as "admin"
+And click on login
+Then page source should contained the text " Order totals"
+Then click on logout
+
+

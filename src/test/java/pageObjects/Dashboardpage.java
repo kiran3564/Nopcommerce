@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class Dashboardpage {
+public class Dashboardpage  {
 	
 	
 public WebDriver ldriver;
@@ -27,6 +27,7 @@ WebElement NopCommerceNews;
 	
 	@FindBy(xpath="//a[normalize-space()='Logout']")
 	WebElement Logout;
+	
 	
 	
 
