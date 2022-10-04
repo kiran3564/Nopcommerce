@@ -10,8 +10,10 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import Nopcommerce.vc_01.XLUtility;
 import io.cucumber.java.en.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import pageObjects.AddcustomerPage;
@@ -270,5 +272,93 @@ public class steps extends Baseclass {
 				Assert.assertTrue(true);
 			
 		}
+			
+		}
+@Then("Get the orders data and save in the excel")
+public void get_the_orders_data_and_save_in_the_excel() throws IOException, InterruptedException {
+	Thread.sleep(5000);
+	dbpage=new Dashboardpage(driver);
+    String path="C:\\Users\\TT-USER\\eclipse-workspace\\nopcommerce\\vc-01\\Exceldata\\orders.xlsx";
+    XLUtility xlutil=new XLUtility(path);
+		
+    xlutil.setCellData("sheet1",    0,0, "order status");
+    xlutil.setCellData("sheet1",    0,1, "today");
+    xlutil.setCellData("sheet1",    0,2, "this week");
+    xlutil.setCellData("sheet1",    0,3, "this month");
+    xlutil.setCellData("sheet1",    0,4, "this year");
+    xlutil.setCellData("sheet1",    0,5, "all time");
+    
+    
+		
+   WebElement table=driver.findElement(By.xpath("//div[@id='average-order-report-grid_wrapper']//div[@class='row']//table//tbody"));
+    int rows=table.findElements(By.xpath("tr")).size();
+for(int r=1;r<=rows;r++)
+{
+	String Orderstatus=table.findElement(By.xpath("tr["+r+"]/td[1]")).getText();
+	String  Today =table.findElement(By.xpath("tr["+r+"]/td[2]")).getText();
+	String Thisweek=table.findElement(By.xpath("tr["+r+"]/td[3]")).getText();
+	String ThisMonth=table.findElement(By.xpath("tr["+r+"]/td[4]")).getText();
+	String Thisyear=table.findElement(By.xpath("tr["+r+"]/td[5]")).getText();
+	String alltime=table.findElement(By.xpath("tr["+r+"]/td[6]")).getText();
+
+System.out.println(Orderstatus+Today+Thisweek+ThisMonth+Thisyear+alltime);
+//writing the data in excel sheet
+xlutil.setCellData("sheet1", r, 0, Orderstatus);
+xlutil.setCellData("sheet1", r, 1, Today);
+xlutil.setCellData("sheet1", r, 2, Thisweek);
+xlutil.setCellData("sheet1", r, 3, ThisMonth);
+xlutil.setCellData("sheet1", r, 4, Thisyear);
+xlutil.setCellData("sheet1", r, 5, alltime);
 }
+System.out.println("webscraping is done sucessfully");
+System.out.println(table);
+
+
 }
+@Then("Get the latest orders data and save in the excel")
+public void get_the_latest_orders_data_and_save_in_the_excel() throws InterruptedException, IOException {
+	Thread.sleep(5000);
+	dbpage=new Dashboardpage(driver);
+    String path="C:\\Users\\TT-USER\\eclipse-workspace\\nopcommerce\\vc-01\\Exceldata\\latestorders.xlsx";
+    XLUtility xlutil=new XLUtility(path);
+		
+    xlutil.setCellData("sheet1",    0,0, "order ");
+    xlutil.setCellData("sheet1",    0,1, "order status");
+    xlutil.setCellData("sheet1",    0,2, "customer");
+    xlutil.setCellData("sheet1",    0,3, "created on");
+    xlutil.setCellData("sheet1",    0,4, "view");
+    //xlutil.setCellData("sheet1",    0,5, "all time");
+    
+    
+		
+   WebElement table=driver.findElement(By.xpath("//div[@id='orders-grid_wrapper']//table//tbody"));
+    int rows=table.findElements(By.xpath("tr")).size();
+for(int r=1;r<=rows;r++)
+{
+	String Order=table.findElement(By.xpath("tr["+r+"]/td[1]")).getText();
+	String orderstatus =table.findElement(By.xpath("tr["+r+"]/td[2]")).getText();
+	String customer=table.findElement(By.xpath("tr["+r+"]/td[3]")).getText();
+	String createdon=table.findElement(By.xpath("tr["+r+"]/td[4]")).getText();
+	String view=table.findElement(By.xpath("tr["+r+"]/td[5]")).getText();
+	//String alltime=table.findElement(By.xpath("tr["+r+"]/td[6]")).getText();
+
+System.out.println(Order+orderstatus+customer+createdon+view);
+//writing the data in excel sheet
+xlutil.setCellData("sheet1", r, 0, Order);
+xlutil.setCellData("sheet1", r, 1, orderstatus);
+xlutil.setCellData("sheet1", r, 2, customer);
+xlutil.setCellData("sheet1", r, 3, createdon);
+xlutil.setCellData("sheet1", r, 4, view);
+//xlutil.setCellData("sheet1", r, 5, alltime);
+}
+System.out.println("webscraping is done sucessfully");
+System.out.println(table);
+
+
+}
+
+	
+}
+
+
+
