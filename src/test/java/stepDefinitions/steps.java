@@ -6,17 +6,24 @@ import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 
 import Nopcommerce.vc_01.XLUtility;
 import io.cucumber.java.en.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import pageObjects.AddcustomerPage;
+import pageObjects.Categories;
 import pageObjects.Dashboardpage;
 import pageObjects.Loginpage;
 import pageObjects.searchcustomerpage;
@@ -357,8 +364,139 @@ System.out.println(table);
 
 }
 
-	
+@Then("Get the latest order data based on serial no")
+public void get_the_latest_order_data_based_on_serial_no() throws InterruptedException {
+	Thread.sleep(5000);
+	dbpage=new Dashboardpage(driver);
+	   List<WebElement> elementslist =driver.findElements(By.xpath("//div[@id='orders-grid_wrapper']//table//tbody//tr//td[1]"));
+	   List<String>originallist=  elementslist.stream().map(s->s.getText()).collect(Collectors.toList());
+	   List<Object>orderdetails=elementslist.stream().filter(s->s.getText().contains("2")).map(s->getorderdetail(s)).collect(Collectors.toList());
+	   
+	   orderdetails.forEach(a->System.out.println(a));
+	   System.out.println("hello");
+		}
+
+		private static Object getorderdetail(WebElement s) {
+			// TODO Auto-generated method stub
+		String orderdetail=	s.findElement(By.xpath("following-sibling::td[2]")).getText();
+			
+			return orderdetail;
+		}
+		
+		@Then("Get the count of popular search keyword if item not there do pagination")
+		public void get_the_count_of_popular_search_keyword_if_item_not_there_do_pagination() throws InterruptedException {
+		    
+			Thread.sleep(5000);
+			dbpage=new Dashboardpage(driver);
+			
+			   List<WebElement> elementslist =driver.findElements(By.xpath("//div[@id='search-term-report-grid_wrapper']//table//tbody//tr//td[1]"));
+			   List<String>originallist=  elementslist.stream().map(s->s.getText()).collect(Collectors.toList());
+			   List<Object>keyworddetails=elementslist.stream().filter(s->s.getText().contains("gift")).map(s->getorderdetails(s)).collect(Collectors.toList());
+			   
+			   keyworddetails.forEach(a->System.out.println(a));
+			   System.out.println("hello");
+			   if(keyworddetails.size()<1)
+			   {
+				   driver.findElement(By.xpath("//li[@id='search-term-report-grid_next']")).click();
+			   }
+				 
+			     while(keyworddetails.size()<1);
+				} 
+				private static Object getorderdetails(WebElement s) {
+					// TODO Auto-generated method stub
+				
+				String orderdetail=	s.findElement(By.xpath("following-sibling::td")).getText();
+					
+					return orderdetail;
+				}
+				
+				
+				
+				
+				@Then("Scroll down and click on the upward arrow")
+				public void scroll_down_and_click_on_the_upward_arrow() throws InterruptedException {
+					Thread.sleep(5000);
+					dbpage=new Dashboardpage(driver);
+					JavascriptExecutor js = (JavascriptExecutor) driver;
+					js.executeScript("window.scrollBy(0,2000)", "");
+					dbpage.scrolling();
+					
+				}
+				
+				@Then("enter the searchword as {string} in the search menu and click on enter")
+				public void enter_the_searchword_as_in_the_search_menu_and_click_on_enter(String string) throws InterruptedException {
+					Thread.sleep(5000);
+					dbpage=new Dashboardpage(driver);
+					dbpage.searching("customers");
+					 Actions act = new Actions(driver);
+				        act.sendKeys(Keys.DOWN).perform();
+				        act.sendKeys(Keys.ENTER).perform();
+					
+				}
+
+				@Then("Url should be changed")
+				public void url_should_be_changed() {
+				  String currenturl =driver.getTitle();
+				  String accurateurl= "https://admin-demo.nopcommerce.com/Admin/Customer/List";
+				  if(currenturl.equals(accurateurl))
+				  {
+					  Assert.assertTrue(true);
+				  }
+				}
+				
+				
+				@Then("click on the catalog")
+				public void click_on_the_catalog() {
+				  cgpage = new Categories(driver);
+				  cgpage.catalogclick();
+				}
+
+				@Then("click on the categories")
+				public void click_on_the_categories() throws InterruptedException {
+					Thread.sleep(5000);
+				   cgpage.categoriesclick();
+				}
+
+				@Then("click on Add new")
+				public void click_on_add_new() {
+					cgpage.addnewclick();
+				}
+
+
+@Then("enter the name as {string}")
+public void enter_the_name_as(String namedata) throws InterruptedException {
+	Thread.sleep(5000);
+    cgpage.entername(namedata);
+    
 }
+			
+			
+
+				@Then("choose category")
+				public void choose_category() throws InterruptedException {
+					Thread.sleep(5000);
+				    WebElement dropdownvalues = driver.findElement(By.xpath("//*[@id=\"ParentCategoryId\"]"));
+			        Select dropdown = new Select(dropdownvalues);
+			        dropdown.selectByVisibleText("Computers");
+				}
+				
+
+				@Then("click on the save button")
+				public void click_on_the_save_button() {
+				    cgpage.clickonsave();
+				    
+				    if(driver.getPageSource().contains("The new category has been added successfully.")) {
+				 	   
+				 	   Assert.assertTrue(true);
+				}
+
+			
+				}
+}
+	
+
+
+	
 
 
 

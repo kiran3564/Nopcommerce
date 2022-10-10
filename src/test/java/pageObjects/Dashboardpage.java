@@ -28,6 +28,11 @@ WebElement NopCommerceNews;
 	@FindBy(xpath="//a[normalize-space()='Logout']")
 	WebElement Logout;
 	
+	@FindBy(xpath="//a[@id='backTop']")
+	WebElement scroller;
+	
+	@FindBy(xpath="//input[@placeholder='Search']")
+	WebElement search;
 	
 	
 
@@ -47,4 +52,12 @@ WebElement NopCommerceNews;
 		Logout.click();
 	}
 
+	public void scrolling() {
+		scroller.click();
+	}
+	
+	public void searching(String searchword) {
+
+		search.sendKeys(searchword);
+}
 }

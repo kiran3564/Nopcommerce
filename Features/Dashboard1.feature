@@ -51,7 +51,8 @@ And user enters email as  "admin@yourstore.com" and password as "admin"
 And click on login
 Then Get the latest orders data and save in the excel
 Then click on logout
-@smoke
+
+
 Scenario: Getting the latest order details based on the serial no
 Given user launch chrome browser
 When user opens url "http://admin-demo.nopcommerce.com/login"
@@ -60,6 +61,33 @@ And click on login
 Then Get the latest order data based on serial no
 Then click on logout
 
+
+Scenario: Getting the count of popular search keyword
+Given user launch chrome browser
+When user opens url "http://admin-demo.nopcommerce.com/login"
+And user enters email as  "admin@yourstore.com" and password as "admin"
+And click on login
+Then Get the count of popular search keyword if item not there do pagination
+Then click on logout
+
+
+Scenario: Verifying the scroller functionality
+Given user launch chrome browser
+When user opens url "http://admin-demo.nopcommerce.com/login"
+And user enters email as  "admin@yourstore.com" and password as "admin"
+And click on login
+Then Scroll down and click on the upward arrow
+Then click on logout
+
+
+Scenario: Verifying the search functionality
+Given user launch chrome browser
+When user opens url "http://admin-demo.nopcommerce.com/login"
+And user enters email as  "admin@yourstore.com" and password as "admin"
+And click on login
+Then enter the searchword as "customers" in the search menu and click on enter
+Then Url should be changed
+Then click on logout
 
 
 
