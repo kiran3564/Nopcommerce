@@ -149,7 +149,7 @@ public class steps extends Baseclass {
 			contains("The new customer has been added successfully"));
 			
 }
-	
+  //search customer by email	
 	@Then("enter customer email")
 	public void enter_customer_email() throws InterruptedException {
 		Thread.sleep(5000);
@@ -492,8 +492,58 @@ public void enter_the_name_as(String namedata) throws InterruptedException {
 
 			
 				}
+				
+				
+				
+				//steps for searching the categories in the categorie page
+				
+				/*@Then("Enter category name as {string}")
+				public void enter_category_name_as(String catnamedata) {
+					cgpage = new Categories(driver);
+					cgpage.entercategoryname(catnamedata);
+				   
+				}
+
+				@Then("click on the searchbutton")
+				public void click_on_the_searchbutton() {
+				   cgpage.searching();
+				}
+				
+				@Then("user should found category name in search table")
+				public void user_should_found_category_name_in_search_table() throws InterruptedException {
+				 boolean status	=cgpage.searchcategoriesbyname("computers");
+					    Thread.sleep(5000);
+
+				     Assert.assertEquals(true, status);
+					
+					}
+			  */
+				
+				//steps for searching the category name
+				
+				
+
+@Then("Enter category name")
+public void enter_category_name() {
+	cgpage = new Categories(driver);
+	cgpage.entercategoryname("computers");
+   
 }
-	
+
+@Then("click on the searchbutton")
+public void click_on_the_searchbutton() throws InterruptedException {
+    cgpage.searching();
+    Thread.sleep(5000);
+}
+
+@Then("user should found category name in search table")
+public void user_should_found_category_name_in_search_table() {
+boolean status=cgpage.searchcategoriesbyname("computers");
+Assert.assertEquals(true, status);
+}
+			}
+
+
 
 
 	

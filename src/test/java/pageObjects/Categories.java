@@ -1,5 +1,8 @@
 package pageObjects;
 
+import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -35,6 +38,28 @@ WebElement save;
 	@FindBy(xpath="//a[normalize-space()='Logout']")
 	WebElement Logoutbutton;
 	
+	@FindBy(xpath="//input[@id='SearchCategoryName']")
+	WebElement categoryname;
+	
+	@FindBy(xpath="//table[@role='grid']")
+	WebElement tblsearchresult;
+	
+	@FindBy(xpath="//table[@id='categories-grid']")
+	WebElement table;
+
+	@FindBy(xpath="//table[@id='categories-grid']//tbody//tr")
+	List<WebElement> tablerows;
+	
+	@FindBy(xpath="//table[@id='categories-grid']//tbody//tr//td")
+	List<WebElement> tablecolumns;
+	
+	@FindBy(xpath="//button[@id='search-categories']")
+	WebElement Search;
+	
+	
+	
+	
+	
 	public void catalogclick()
 	{
 		catalog.click();
@@ -59,7 +84,38 @@ WebElement save;
 	public void logout() {
 		Logoutbutton.click();
 	}
+	public void searching() {
+		Search.click();
+	}
 	
+	public void entercategoryname(String catnamedata) {
+		categoryname.sendKeys(catnamedata);
+	}
+	public int getnoofrows() {
+		return(tablerows.size());
+	}
+	public int getnofcolumns( ) {
+		return(tablecolumns.size());
+	}
+	
+	public boolean searchcategoriesbyname(String catnamedata)
+	{
+		boolean flag=false;
+		
+		for(int i=1;i<=getnoofrows();i++)
+		{
+			String Name=table.findElement(By.xpath("//table[@id='categories-grid]//tbody//tr["+i+"]//td[2]")).getText();
+			System.out.println(Name);
+			
+			if(Name.equals(catnamedata))
+			{
+				flag=true;
+			}
+		}
+		return flag;
+}
+
+
 	
 	
 	
