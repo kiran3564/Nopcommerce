@@ -2,7 +2,13 @@ package stepDefinitions;
 
 import static org.junit.Assert.assertEquals;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,6 +32,7 @@ import pageObjects.AddcustomerPage;
 import pageObjects.Categories;
 import pageObjects.Dashboardpage;
 import pageObjects.Loginpage;
+import pageObjects.Manufacturerspage;
 import pageObjects.searchcustomerpage;
 
 public class steps extends Baseclass {
@@ -464,7 +471,7 @@ public void get_the_latest_order_data_based_on_serial_no() throws InterruptedExc
 
 
 @Then("enter the name as {string}")
-public void enter_the_name_as(String namedata) throws InterruptedException {
+ public void enter_the_name_as(String namedata) throws InterruptedException {
 	Thread.sleep(5000);
     cgpage.entername(namedata);
     
@@ -493,33 +500,7 @@ public void enter_the_name_as(String namedata) throws InterruptedException {
 			
 				}
 				
-				
-				
-				//steps for searching the categories in the categorie page
-				
-				/*@Then("Enter category name as {string}")
-				public void enter_category_name_as(String catnamedata) {
-					cgpage = new Categories(driver);
-					cgpage.entercategoryname(catnamedata);
-				   
-				}
-
-				@Then("click on the searchbutton")
-				public void click_on_the_searchbutton() {
-				   cgpage.searching();
-				}
-				
-				@Then("user should found category name in search table")
-				public void user_should_found_category_name_in_search_table() throws InterruptedException {
-				 boolean status	=cgpage.searchcategoriesbyname("computers");
-					    Thread.sleep(5000);
-
-				     Assert.assertEquals(true, status);
-					
-					}
-			  */
-				
-				//steps for searching the category name
+					//steps for searching the category name
 				
 				
 
@@ -540,9 +521,108 @@ public void click_on_the_searchbutton() throws InterruptedException {
 public void user_should_found_category_name_in_search_table() {
 boolean status=cgpage.searchcategoriesbyname("computers");
 Assert.assertEquals(true, status);
-}
-			}
 
+			}
+//steps for downloading categories file and validating wether the excel file is downloaded or not
+
+
+@Then("click on the export drop down")
+public void click_on_the_export_drop_down() throws InterruptedException {
+    Thread.sleep(5000);
+    cgpage = new Categories(driver);
+    cgpage.clickonexportdropdown();
+}
+
+@Then("click on the export to excel")
+public void click_on_the_export_to_excel() throws InterruptedException {
+    Thread.sleep(2000);
+    cgpage.clickonexceloption();
+}
+
+@Then("user should found the downloadedfile in the machine")
+public void user_should_found_the_downloadedfile_in_the_machine() {
+
+	
+	
+    File fileLocation = new File("C:\\Users\\TT-USER\\Downloads");
+
+    File[] totalFiles=fileLocation.listFiles();
+
+    for(File file : totalFiles) {
+    	   String downloadPath="C:\\Users\\TT-USER\\Downloads";
+		//00Assert.assertTrue(file.equals("categories.xlsx"));
+    	Assert.assertTrue(isFileDownloaded_Ext(downloadPath, ".xlsx"));
+}
+}
+
+public static boolean isFileDownloaded_Ext(String dirPath, String ext){
+	boolean flag=false;
+    File dir = new File(dirPath);
+    File[] files = dir.listFiles();
+    if (files == null || files.length == 0) {
+        flag = false;
+    }
+    
+    for (int i = 1; i < files.length; i++) {
+    	if(files[i].getName().contains(ext)) {
+    		flag=true;
+    	}
+    }
+    return flag;
+
+}
+
+//steps for adding the manufacturers
+
+@Then("click on the Manufacturers")
+public void click_on_the_manufacturers() throws InterruptedException {
+	Thread.sleep(5000);
+  mfpage = new Manufacturerspage(driver);
+  mfpage.manfacturersclick();
+  
+}
+
+@Then("click on addnew")
+public void click_on_addnew() throws InterruptedException {
+   Thread.sleep(5000);
+   mfpage.addbuttonclick();
+}
+
+@Then("Enter all the details")
+public void enter_all_the_details() throws InterruptedException, AWTException {
+	driver.findElement(By.xpath("//input[@id='Name']")).sendKeys("bikes");
+	driver.findElement(By.xpath("//div[@class='upload-button-container']")).click();
+	Thread.sleep(5000);
+	
+	 StringSelection stringSelection = new StringSelection("C:\\Users\\TT-USER\\Pictures\\Saved Pictures\\test.png");
+	Thread.sleep(5000);
+	 Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+	   Robot robot = new Robot();
+		
+       robot.keyPress(KeyEvent.VK_CONTROL);
+       robot.keyPress(KeyEvent.VK_V);
+       robot.keyRelease(KeyEvent.VK_V);
+       robot.keyRelease(KeyEvent.VK_CONTROL);
+       robot.keyPress(KeyEvent.VK_ENTER);
+       robot.keyRelease(KeyEvent.VK_ENTER);
+}
+
+@Then("click on save")
+public void click_on_save() throws InterruptedException {
+Thread.sleep(5000);
+mfpage.savebuttonclick();
+}
+
+@Then("user should found manfacturer message added in the browser")
+public void user_should_found_manfacturer_message_added_in_the_browser() {
+	
+	  if(driver.getPageSource().contains("The new manufacturer has been added successfully.")) {
+    	  
+    	  Assert.assertTrue(true);
+      }
+}
+
+}
 
 
 

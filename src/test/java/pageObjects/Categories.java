@@ -56,6 +56,13 @@ WebElement save;
 	@FindBy(xpath="//button[@id='search-categories']")
 	WebElement Search;
 	
+	@FindBy(xpath="//button[@class='btn btn-success dropdown-toggle']")
+	WebElement exportdropdown;
+	
+	@FindBy(xpath="//i[@class='far fa-file-excel']")
+	WebElement exceloption;
+	
+	
 	
 	
 	
@@ -113,6 +120,12 @@ WebElement save;
 			}
 		}
 		return flag;
+	}
+		public void clickonexportdropdown() {
+			exportdropdown.click();
+		}
+		public void clickonexceloption() {
+			exceloption.click();
 }
 
 

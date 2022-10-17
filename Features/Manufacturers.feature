@@ -1,5 +1,6 @@
 Feature: Manufacturers adding and deleting
 
+@smoke
 Scenario: Add manufacturer
 Given user launch chrome browser
 When user opens url "http://admin-demo.nopcommerce.com/login"
