@@ -13,8 +13,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -24,6 +26,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
+
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
 
 import Nopcommerce.vc_01.XLUtility;
 import io.cucumber.java.en.*;
@@ -36,12 +42,19 @@ import pageObjects.Manufacturerspage;
 import pageObjects.searchcustomerpage;
 
 public class steps extends Baseclass {
+
 	
+	ExtentReports eRep = Baseclass.getInstance();
+	ExtentTest	eTest=eRep.startTest("test started");
 	
 	@Given("user launch chrome browser")
 	public void user_launch_chrome_browser() throws InterruptedException {
+	
+		
 		WebDriverManager.chromedriver().setup();
 		 driver = new ChromeDriver();
+		
+		 
 		 lp=new Loginpage(driver);
 		 //Thread.sleep(5000);
 
@@ -49,8 +62,14 @@ public class steps extends Baseclass {
 
 	@When("user opens url {string}")
 	public void user_opens_url(String url) throws InterruptedException {
+	
 		driver.get(url);
+		eTest.log(LogStatus.INFO, "url opened");
+		
 	    driver.manage().window().maximize(); 
+	    eTest.log(LogStatus.INFO, "url maximized");
+		
+	    
 	    //Thread.sleep(5000);
 	}
 
@@ -59,6 +78,7 @@ public class steps extends Baseclass {
 
      lp.username(email);
 	  lp.pwd(password);
+	 
 	  //Thread.sleep(5000);
 	}
 
@@ -66,6 +86,8 @@ public class steps extends Baseclass {
 	public void click_on_login() throws InterruptedException {
 	 
 		lp.login();
+		 eTest.log(LogStatus.INFO, "Sucessfully Loggedin");
+		 
 		Thread.sleep(5000);
 	}
 
@@ -578,7 +600,10 @@ public static boolean isFileDownloaded_Ext(String dirPath, String ext){
 public void click_on_the_manufacturers() throws InterruptedException {
 	Thread.sleep(5000);
   mfpage = new Manufacturerspage(driver);
+ 
+  
   mfpage.manfacturersclick();
+  eTest.log(LogStatus.INFO, "Manfacturers opened");
   
 }
 
@@ -586,6 +611,9 @@ public void click_on_the_manufacturers() throws InterruptedException {
 public void click_on_addnew() throws InterruptedException {
    Thread.sleep(5000);
    mfpage.addbuttonclick();
+   eTest.log(LogStatus.INFO, "Added new manfacturers page displayed");
+   eRep.endTest(eTest);
+   eRep.flush();
 }
 
 @Then("Enter all the details")
@@ -611,6 +639,9 @@ public void enter_all_the_details() throws InterruptedException, AWTException {
 public void click_on_save() throws InterruptedException {
 Thread.sleep(5000);
 mfpage.savebuttonclick();
+eTest.log(LogStatus.INFO, "Saved");
+
+
 }
 
 @Then("user should found manfacturer message added in the browser")
